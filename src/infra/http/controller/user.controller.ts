@@ -6,6 +6,9 @@ import {
   Body,
   Put,
   Delete,
+  ParseUUIDPipe,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { UserService } from 'src/application/services/user.service';
 import { UserDto } from '../dtos/user.dto';
@@ -25,17 +28,21 @@ export class UserController {
   }
 
   @Get(':id')
-  async findById(@Param('id') id: string) {
-    return this.userService.findById(id);
+  async findById(@Param('id', new ParseUUIDPipe()) id: string) {
+    return await this.userService.findById(id);
   }
 
   @Put(':id')
-  async updateById(@Param('id') id: string, @Body() userDto: any) {
+  async updateById(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Body() userDto: any,
+  ) {
     return await this.userService.updateById(id, userDto);
   }
 
   @Delete(':id')
-  async deleteById(@Param('id') id: string) {
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async deleteById(@Param('id', new ParseUUIDPipe()) id: string) {
     return await this.userService.deleteById(id);
   }
 }
