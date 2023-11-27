@@ -1,33 +1,41 @@
-import { Controller, Get, Param, Delete } from '@nestjs/common';
-import { UserServicee } from 'src/application/services/user.service';
-// import { UserDto } from 'src/infra/http/dtos/user.dto';
+import {
+  Controller,
+  Get,
+  Post,
+  Param,
+  Body,
+  Put,
+  Delete,
+} from '@nestjs/common';
+import { UserService } from 'src/application/services/user.service';
+import { UserDto } from '../dtos/user.dto';
 
-@Controller('product')
+@Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserServicee) {}
+  constructor(private readonly userService: UserService) {}
 
-  @Get()
-  async all() {
-    return await this.userService.all();
+  @Post()
+  async create(@Body() userDto: UserDto) {
+    return await this.userService.create(userDto);
   }
 
-  // @Post()
-  // async create(@Body() userDto: UserDto) {
-  //   return await this.userService.create(userDto);
-  // }
+  @Get()
+  async findAll() {
+    return await this.userService.findAll();
+  }
 
-  // @Get(':id')
-  // async findById(@Param('id') id: number) {
-  //   return this.userService.findById(id);
-  // }
+  @Get(':id')
+  async findById(@Param('id') id: string) {
+    return this.userService.findById(id);
+  }
 
-  // @Put(':id')
-  // async updateById(@Param('id') id: number, @Body() userDto: UserDto) {
-  //   return await this.userService.updateById(id, userDto);
-  // }
+  @Put(':id')
+  async updateById(@Param('id') id: string, @Body() userDto: any) {
+    return await this.userService.updateById(id, userDto);
+  }
 
   @Delete(':id')
-  async deleteById(@Param('id') id: number) {
+  async deleteById(@Param('id') id: string) {
     return await this.userService.deleteById(id);
   }
 }

@@ -1,15 +1,16 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsEmail, Matches } from 'class-validator';
+import { RegExHelper } from 'src/infra/helpers/regex.helper';
 
 export class UserDto {
-  @IsNotEmpty({ message: 'Name cannot be empty!' })
+  @IsNotEmpty({ message: 'Name is needed!' })
   @IsString()
   name: string;
 
-  @IsNotEmpty({ message: 'Email cannot be empty!' })
-  @IsString()
+  @IsNotEmpty({ message: 'Email is needed!' })
+  @IsEmail()
   email: string;
 
-  @IsNotEmpty({ message: 'password is needed!' })
-  @IsString()
+  @IsNotEmpty({ message: 'Password is needed!' })
+  @Matches(RegExHelper.password)
   password: string;
 }
