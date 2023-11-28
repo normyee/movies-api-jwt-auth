@@ -29,15 +29,15 @@ export class User {
     return this._email;
   }
 
-  set email(newemail: string) {
-    this._email = newemail;
+  set email(newEmail: string) {
+    this._email = newEmail;
   }
 
   get password(): string {
     return this._password;
   }
 
-  set password(newpassword: string) {
-    this._password = newpassword;
+  set password(newPassword: string) {
+    this._password = newPassword;
   }
 }
