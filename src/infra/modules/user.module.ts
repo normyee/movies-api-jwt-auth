@@ -5,6 +5,8 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { UserEntity } from '../data/user.entity';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth.module';
+import { MoviesEntity } from '../data/movie.entity';
+import { MoviesModule } from './movies.module';
 
 @Module({
   imports: [
@@ -19,8 +21,9 @@ import { AuthModule } from './auth.module';
       autoLoadEntities: true,
       synchronize: true,
     } as TypeOrmModuleOptions),
-    TypeOrmModule.forFeature([UserEntity]),
+    TypeOrmModule.forFeature([UserEntity, MoviesEntity]),
     forwardRef(() => AuthModule),
+    forwardRef(() => MoviesModule),
   ],
   controllers: [UserController],
   providers: [UserService],

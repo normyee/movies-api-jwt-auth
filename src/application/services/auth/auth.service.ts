@@ -10,6 +10,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
+  // tokenize login
   async login(user) {
     const payload = { sub: user.id, email: user.email };
 
@@ -18,6 +19,7 @@ export class AuthService {
     };
   }
 
+  // local strategy method with passport for login validation
   async validateUser(email: string, password: string) {
     try {
       const user = await this.userService.findByEmail(email);
