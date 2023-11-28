@@ -10,7 +10,7 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import { UserService } from 'src/application/services/user.service';
+import { UserService } from 'src/application/services/user/user.service';
 import { UserDto } from '../dtos/user.dto';
 
 @Controller('users')
@@ -30,6 +30,11 @@ export class UserController {
   @Get(':id')
   async findById(@Param('id', new ParseUUIDPipe()) id: string) {
     return await this.userService.findById(id);
+  }
+
+  @Get('email/:email')
+  async findByEmail(@Param('email') email: string) {
+    return await this.userService.findByEmail(email);
   }
 
   @Put(':id')

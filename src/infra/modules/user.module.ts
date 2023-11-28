@@ -1,9 +1,10 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { UserController } from '../http/controller/user.controller';
-import { UserService } from '../../application/services/user.service';
+import { UserService } from 'src/application/services/user/user.service';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { UserEntity } from '../data/user.entity';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ConfigModule } from '@nestjs/config';
       synchronize: true,
     } as TypeOrmModuleOptions),
     TypeOrmModule.forFeature([UserEntity]),
+    forwardRef(() => AuthModule),
   ],
   controllers: [UserController],
   providers: [UserService],

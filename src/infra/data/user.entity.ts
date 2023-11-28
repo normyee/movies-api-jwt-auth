@@ -7,7 +7,7 @@ import {
   DeleteDateColumn,
   BeforeInsert,
 } from 'typeorm';
-import { hashSync } from 'bcrypt';
+import { hash } from 'bcrypt';
 
 @Entity({ name: 'users' })
 export class UserEntity {
@@ -33,7 +33,7 @@ export class UserEntity {
   deletedAt: string;
 
   @BeforeInsert()
-  hashPassword() {
-    this.password = hashSync(this.password, 10);
+  async hashPassword() {
+    this.password = await hash(this.password, 10);
   }
 }
