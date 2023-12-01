@@ -1,16 +1,13 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { MoviesEntity } from 'src/infra/data/movie.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Cache } from 'cache-manager';
 
 @Injectable()
 export class MoviesService {
   constructor(
     @InjectRepository(MoviesEntity)
     private readonly userRepository: Repository<MoviesEntity>,
-    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
   async create(data: any) {
