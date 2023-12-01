@@ -1,3 +1,4 @@
+import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 import {
   Body,
   Controller,
@@ -10,11 +11,14 @@ import {
   Post,
   Put,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { MoviesService } from 'src/application/services/movies/movies.service';
 
 @Controller('movies')
+@UseInterceptors(CacheInterceptor)
+@CacheTTL(60000)
 @UseGuards(AuthGuard('jwt'))
 export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}

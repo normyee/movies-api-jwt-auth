@@ -19,21 +19,7 @@ export class MoviesService {
   }
 
   async findAll(): Promise<MoviesEntity[]> {
-    const cachedCatalog = await this.cacheManager.get('catalog');
-
-    if (cachedCatalog) {
-      console.log('Cached');
-
-      return cachedCatalog as MoviesEntity[];
-    }
-
-    const catalog = await this.userRepository.find();
-
-    await this.cacheManager.set('catalog', catalog, 60000);
-
-    console.log('Caching...');
-
-    return catalog;
+    return await this.userRepository.find();
   }
 
   async findById(id: string): Promise<MoviesEntity> {
