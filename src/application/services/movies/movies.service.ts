@@ -1,13 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { MoviesEntity } from 'src/infra/data/movie.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class MoviesService {
   constructor(
     @InjectRepository(MoviesEntity)
     private readonly userRepository: Repository<MoviesEntity>,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
   async create(data: any) {
@@ -16,7 +19,21 @@ export class MoviesService {
   }
 
   async findAll(): Promise<MoviesEntity[]> {
-    return await this.userRepository.find();
+    const cachedCatalog = await this.cacheManager.get('catalog');
+
+    if (cachedCatalog) {
+      console.log('Cached');
+
+      return cachedCatalog as MoviesEntity[];
+    }
+
+    const catalog = await this.userRepository.find();
+
+    await this.cacheManager.set('catalog', catalog, 60000);
+
+    console.log('Caching...');
+
+    return catalog;
   }
 
   async findById(id: string): Promise<MoviesEntity> {
