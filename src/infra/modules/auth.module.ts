@@ -15,7 +15,7 @@ import { JwtStrategy } from 'src/application/services/auth/strategies/jwt.strate
     PassportModule,
     JwtModule.register({
       privateKey: process.env.JWT_SECRET_KEY,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '300s' },
     }),
   ],
   controllers: [AuthController],
