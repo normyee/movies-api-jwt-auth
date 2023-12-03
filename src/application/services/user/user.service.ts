@@ -1,8 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from 'src/infra/data/user.entity';
-import { UpdateUserDto } from 'src/infra/http/dtos/update-user.dto';
-import { UserDto } from 'src/infra/http/dtos/user.dto';
+import {
+  DeleteResponse,
+  UpdateResponse,
+  UpdateUser,
+  UserData,
+} from 'src/common/types';
+import { UserEntity } from '../../../infra/data/user.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -12,7 +16,7 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  async create(data: UserDto) {
+  async create(data: UserData) {
     const user = this.userRepository.create(data);
     return await this.userRepository.save(user);
   }
@@ -29,11 +33,11 @@ export class UserService {
     return await this.userRepository.findOne({ where: { email } });
   }
 
-  async updateById(id: string, data: UpdateUserDto): Promise<any> {
+  async updateById(id: string, data: UpdateUser): Promise<UpdateResponse> {
     return await this.userRepository.update(id, data);
   }
 
-  async deleteById(id: string): Promise<any> {
+  async deleteById(id: string): Promise<DeleteResponse> {
     return await this.userRepository.delete(id);
   }
 }

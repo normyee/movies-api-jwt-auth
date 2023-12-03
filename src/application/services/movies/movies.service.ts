@@ -1,7 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { MoviesEntity } from 'src/infra/data/movie.entity';
+import { MoviesEntity } from '../../../infra/data/movie.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import {
+  DeleteResponse,
+  MovieData,
+  UpdateResponse,
+} from '../../../common/types';
+import { MovieDto } from '../../../infra/http/dtos/movie.dto';
 
 @Injectable()
 export class MoviesService {
@@ -10,7 +16,7 @@ export class MoviesService {
     private readonly userRepository: Repository<MoviesEntity>,
   ) {}
 
-  async create(data: any) {
+  async create(data: MovieDto) {
     const title = this.userRepository.create(data);
     return await this.userRepository.save(title);
   }
@@ -27,11 +33,11 @@ export class MoviesService {
     return await this.userRepository.findOne({ where: { title } });
   }
 
-  async updateById(id: string, data: any): Promise<any> {
+  async updateById(id: string, data: MovieData): Promise<UpdateResponse> {
     return await this.userRepository.update(id, data);
   }
 
-  async deleteById(id: string): Promise<any> {
+  async deleteById(id: string): Promise<DeleteResponse> {
     return await this.userRepository.delete(id);
   }
 }

@@ -3,8 +3,8 @@ import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
-import { UserEntity } from 'src/infra/data/user.entity';
-import { validatePasswords } from 'src/infra/helpers/password-comparer.helper';
+import { UserEntity } from '../../../infra/data/user.entity';
+import { validatePasswords } from '../../../infra/helpers/password-comparer.helper';
 
 @Injectable()
 export class AuthService {

@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { UserService } from 'src/application/services/user/user.service';
 import { UserDto } from '../dtos/user.dto';
+import { UpdateUserDto } from '../dtos/update-user.dto';
 
 @Controller('users')
 export class UserController {
@@ -40,9 +41,9 @@ export class UserController {
   @Put(':id')
   async updateById(
     @Param('id', new ParseUUIDPipe()) id: string,
-    @Body() userDto: any,
+    @Body() updateUserDto: UpdateUserDto,
   ) {
-    return await this.userService.updateById(id, userDto);
+    return await this.userService.updateById(id, updateUserDto);
   }
 
   @Delete(':id')

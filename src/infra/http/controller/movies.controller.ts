@@ -15,6 +15,8 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { MoviesService } from 'src/application/services/movies/movies.service';
+import { MovieDto } from '../dtos/movie.dto';
+import { UpdateMovieDto } from '../dtos/update-movie.dto';
 
 @Controller('movies')
 @UseInterceptors(CacheInterceptor)
@@ -24,8 +26,8 @@ export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
   @Post()
-  async create(@Body() title: any) {
-    return await this.moviesService.create(title);
+  async create(@Body() movieDto: MovieDto) {
+    return await this.moviesService.create(movieDto);
   }
 
   @Get()
@@ -46,7 +48,7 @@ export class MoviesController {
   @Put(':id')
   async updateById(
     @Param('id', new ParseUUIDPipe()) id: string,
-    @Body() movieDto: any,
+    @Body() movieDto: UpdateMovieDto,
   ) {
     return await this.moviesService.updateById(id, movieDto);
   }
