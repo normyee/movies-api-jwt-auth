@@ -8,6 +8,7 @@ import {
 } from 'src/common/types';
 import { UserEntity } from '../../../infra/data/user.entity';
 import { Repository } from 'typeorm';
+import { EmailAlreadyInUseException } from 'src/errors/email-already-in-use.error';
 
 @Injectable()
 export class UserService {
@@ -17,8 +18,16 @@ export class UserService {
   ) {}
 
   async create(data: UserData) {
-    const user = this.userRepository.create(data);
-    return await this.userRepository.save(user);
+    try {
+      const { email } = data;
+      if (await this.userRepository.findOne({ where: { email } })) {
+        throw new EmailAlreadyInUseException('This email is already in use.');
+      }
+      const user = this.userRepository.create(data);
+      return await this.userRepository.save(user);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async findAll(): Promise<UserEntity[]> {
